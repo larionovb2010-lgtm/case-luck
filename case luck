@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Gold</title>
+    <style>
+        body {
+            background-color: gold;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: darkred;
+        }
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 10px solid black;
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .segment {
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            transform-origin: 100% 100%;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        .segment:nth-child(1) { background-color: #ffd700; transform: rotate(0deg); }
+        .segment:nth-child(2) { background-color: #ffcc00; transform: rotate(90deg); }
+        .segment:nth-child(3) { background-color: #ffb300; transform: rotate(180deg); }
+        .segment:nth-child(4) { background-color: #ffa500; transform: rotate(270deg); }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: darkgreen;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Lucky Gold</h1>
+<div id="wheel">
+    <div class="segment">Золотой нож</div>
+    <div class="segment">Автомат</div>
+    <div class="segment">Пистолет</div>
+    <div class="segment">Винтовка</div>
+</div>
+<button id="spinButton">Крутить колесо</button>
+<div id="result"></div>
+<script>
+    const items = [
+        { name: "Золотой нож", chance: 5 },
+        { name: "Автомат", chance: 20 },
+        { name: "Пистолет", chance: 45 },
+        { name: "Винтовка", chance: 30 }
+    ];
+    function spinWheel() {
+        const randomValue = Math.random() * 100;
+        let cumulativeChance = 0;
+        for (const item of items) {
+            cumulativeChance += item.chance;
+            if (randomValue < cumulativeChance) {
+                return item.name;
+            }
+        }
+    }
+    document.getElementById("spinButton").addEventListener("click", function() {
+        const result = spinWheel();
+        // Вращение колеса
+        const wheel = document.getElementById("wheel");
+        wheel.style.transition = "transform 4s cubic-bezier(0.33, 1, 0.68, 1)";
+        wheel.style.transform = rotate(${Math.random() * 360 + 720}deg); // минимум 2 оборота
+        setTimeout(() => {
+            document.getElementById("result").innerText = Вы выпали: ${result};
+            wheel.style.transition = "none"; // сбросить плавность после завершения вращения
+            wheel.style.transform = "rotate(0deg)"; // сбросить вращение для следующего раза
+        }, 4000); // время вращения
+    });
+</script>
+</body>
+</html>
